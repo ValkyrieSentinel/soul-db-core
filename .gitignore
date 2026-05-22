@@ -1,0 +1,8 @@
+zig-linux-x86_64-0.13.0/
+zig-cache/
+zig-out/
+*.o
+*.a
+*.pdb
+.DS_Store
+.vscode/
