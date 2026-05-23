@@ -33,10 +33,9 @@ pub fn main() !void {
         defer file.close();
 
         try file.writeAll(std.mem.asBytes(&header));
-
         try file.writeAll(std.mem.asBytes(&first_page));
 
-        try stdout.print(" Файл soul.db створено ({d} байт).\n", .{try file.getEndPos()});
+        try stdout.print(" File soul.db created ({d} bytes).\n", .{try file.getEndPos()});
     }
 
     {
@@ -44,19 +43,18 @@ pub fn main() !void {
         defer file.close();
 
         var loaded_header: DbHeader = undefined;
-
         _ = try file.readAll(std.mem.asBytes(&loaded_header));
 
         if (std.mem.eql(u8, &loaded_header.magic, "SOULCODE")) {
-            try stdout.print(" Валідація успішна: Знайдено сигнатуру {s}\n", .{loaded_header.magic});
-            try stdout.print(" Параметри БД: Версія {d}, Розмір сторінки {d} байт\n", .{ loaded_header.version, loaded_header.page_size });
+            try stdout.print(" Validation successful: Signature {s} found.\n", .{loaded_header.magic});
+            try stdout.print(" DB Params: Version {d}, Page size {d} bytes.\n", .{ loaded_header.version, loaded_header.page_size });
         } else {
-            try stdout.print(" Помилка: Файл пошкоджений або має невірний формат!\n", .{});
+            try stdout.print(" Error: File is corrupted or has an invalid format!\n", .{});
         }
 
         var loaded_page: Page = undefined;
         _ = try file.readAll(std.mem.asBytes(&loaded_page));
 
-        try stdout.print(" Дані першої сторінки: {s}\n", .{loaded_page.data[0..35]});
+        try stdout.print(" First page data: {s}\n", .{loaded_page.data[0..35]});
     }
 }
